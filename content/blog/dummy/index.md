@@ -1,7 +1,7 @@
 ---
-title: "Post with Large Feature Image and Text"
+title: "Dummy post for now"
 date: "2020-07-27T07:26:03.284Z"
-description: "Custom written post descriptions are the way to go... if you're not lazy."
+description: "dummy post for now, ongoing setting up new blog"
 categories: [paragraph, feature photo]
 comments: true
 image:

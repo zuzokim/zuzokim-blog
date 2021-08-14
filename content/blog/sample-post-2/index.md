@@ -1,7 +1,7 @@
 ---
-title: Sample Post
+title: Dummy blog
 date: "2020-07-27T07:26:03.284Z"
-description: "Just about everything you'll need to style in the theme: headings, paragraphs, blockquotes, tables, code blocks, and more."
+description: "dummy blog for now"
 categories: [hello world]
 comments: true
 image:

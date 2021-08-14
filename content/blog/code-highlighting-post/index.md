@@ -1,21 +1,125 @@
 ---
-title: Syntax Highlighting Post
-date: "2020-07-27T07:26:03.284Z"
-description: "Demo post displaying the various ways of highlighting code in Markdown."
+title: JS 순수함수
+date: "2020-08-12T07:26:03.284Z"
+description: "순수함수 = 동일한 입력에 대해 항상 동일한 출력을 반환하는 함수. 예시코드와 함께 이해하기"
 categories: [code]
 comments: true
 ---
+# 순수함수란?
 
-Syntax highlighting is a feature that displays source code, in different colors and fonts according to the category of terms. This feature facilitates writing in a structured language such as a programming language or a markup language as both structures and syntax errors are visually distinct. Highlighting does not affect the meaning of the text itself; it is intended only for human readers.[^1]
+> 동일한 입력에 대해 항상 동일한 출력을 반환하는 함수
+> 외부상태에 영향을 미치는 side effect가 없는 함수 
 
-[^1]: http://en.wikipedia.org/wiki/Syntax_highlighting
-
-### Fenced Code Blocks
-
-```css
-#container {
-  float: left;
-  margin: 0 -240px 0 0;
-  width: 100%;
+아래는 순수함수의 예시다.
+```js
+//순수함수
+function add(a, b) {
+  return a + b;
 }
+console.log(add(3, 4));//항상 같은 값을 출력함
 ```
+
+그리고 아래는 순수함수가 아닌 함수의 예시다.
+
+```js
+//순수함수X
+let c = 5;
+
+function add2(a, b) {
+  return a + b + c;
+}
+
+console.log(add2(2, 3)); //10
+
+// 함수 밖 변수에 새로운 값을 재할당하면
+c = 2;
+
+// 같은 함수임에도 결과가 달라짐
+console.log(add2(2, 3)); //7
+---------------------------------------
+//순수함수X
+let D = 10;
+
+function add3(a, b) {
+  D = b; //함수 내부에서 외부 변수 값을 재할당
+  return a + b;
+}
+
+console.log(add3(2, 5));//함수를 실행하고 나면
+console.log(D);//외부 변수 D의 값이 5가 됨.
+
+```
+여기서 잠깐 헷갈릴 수 있는 예시!
+아래의 코드에서는 인자로 받은 객체에 아무 변화를 주지 않고 리턴했지만, **순수함수가 아니다**. 
+
+```js
+//순수함수X
+let obj = { a : 10 };
+
+function func(obj) {
+  return obj; // 인자로 받은 객체를 그대로 리턴
+}
+
+let obj2 = func(obj); // 새로운 변수에 리턴된 객체를 할당
+
+obj2.a = 50; // 새로운 객체 obj2의 a 값을 변경
+
+console.log(obj2); // { a: 50 }
+console.log(obj); // { a: 50 } -- 기존 객체의 값도 변함!!
+```
+* 왜냐! 새로운 객체에 함수를 실행하여 얻은 객체를 할당하고 그 값을 변경하면, 기존의 객체의 값도 변경된다.
+* **기존 객체의 참조(reference) 값이 복사되어 새 변수에 할당된 것이고, 새 변수의 값을 변경하니, 같은 주소를 참조하고 있는 기존 객체의 값도 변해버리는 것!**
+## 함수형 프로그래밍
+
+이렇게 불변성을 지향하는 순수함수와 함수 모듈화를 통해 **함수형 프로그래밍**을 할 수 있다. 
+- 함수형 프로그래밍이란 ? 
+JS에서 함수가 일급함수임을 이용해 함수의 인자나 결과값에 함수를 사용하는 프로그래밍 패러다임이다. 
+- 이때, 함수를 불변성을 지향하는 순수함수를 사용하며, 순수함수의 특징과 장점을 자연스럽게 살린 것이 함수형 프로그래밍의 핵심이다.
+- 완벽히 모든 함수를 순수함수로 모듈화할 수는 없겠지만, 함수형 프로그래밍을 하면 좋은 이유가 있다.
+
+
+> 동작과 결과값을 예측하기 쉬워진다.
+> side effect를 최소화할 수 있다.
+> 함수 단위(모듈)의 코드 재사용이 편해진다.
+> 디버깅이 수월하고 유지보수가 편리해진다.
+
+이때, **불변성(immutability)**을 지향한다는 것에 대해 다시 짚어보면,
+
+```js
+let obj1 = { val: 10 };
+
+// 순수함수X
+function notPureFunc(obj, b) {
+  obj.val += b; 
+  // 리턴값은 일정하지만,
+  //함수로 들어온 인자의 상태(= 외부 상태)를 직접 변경함.
+}
+
+// 순수함수
+function PureFunc(obj, b) {
+  return { val: obj.val + b };
+}
+
+let a = PureFunc(obj1, 5);
+
+console.log(obj1.val); // 기존의 obj1의 val값은 그대로 10
+console.log(a.val); //  a에 새로 할당한 결과값은 15
+```
+
+위의 예시코드와 같이 순수함수를 사용해 외부에 생성된 객체를 직접 건드리지 않고, **새로운 객체를 리턴**하여 외부 객체의 값을 변화시킬 수 있다. 즉, **생성된 객체의 값을 참조**만 하는 것이다. 이를 불변성(immutability)을 지킨다고 말한다.
+
+### 순수함수의 특징, 불변성을 지켜야 하는 이유?
+
+- 객체(Object)는 참조(reference) 데이터 타입이다. 즉, 우리는 객체를 다룰 때 주소를 참조하여 값을 조회하여 사용한다.
+- 원시타입과 다르게 객체 타입의 상태(값)은 언제든지 변경이 가능한 값이며, 객체가 참조를 통해 공유되어 있다면 한 곳에서 값을 변경하면 의도치 않게 다른 곳에서 영향을 받는 문제가 생길 수 있다.
+- 따라서, 객체의 주소를 참조해 사용하고, 직접 값을 변화시키는 것은 주의해야한다.
+
+## 🔍
+
+모든 함수를 모듈화하고, 순수함수로 작성할 수는 없겠지만 
+- 순수함수의 장점을 이해하고, 
+- 불변성을 지키는 것이 필요한 이유를 알고 있다면 
+
+코드 로직의 흐름을 예측하고,
+정확하게 데이터를 다룰 수 있다 !
+
