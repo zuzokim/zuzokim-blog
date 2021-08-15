@@ -11,6 +11,7 @@ comments: true
 > 외부상태에 영향을 미치는 side effect가 없는 함수 
 
 아래는 순수함수의 예시다.
+
 ```js
 //순수함수
 function add(a, b) {
