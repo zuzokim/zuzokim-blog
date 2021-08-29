@@ -6,7 +6,7 @@
 
 made during [HackaLearn2021 Korea](https://github.com/devrel-kr/HackaLearn)
 
-[❤️‍🔥 zuzokim blog link ❤️‍🔥](https://www.zuzokim.xyz)
+❤️‍🔥 https://www.zuzokim.xyz ❤️‍🔥
 
 ## 설치 및 배포 방법
 ### 1. nodejs & npm 설치 
